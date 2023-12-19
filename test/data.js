@@ -22,6 +22,14 @@ const registrationResponseData = {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzU5Mzg2ODBjOGFjNDBkN2EwOTIyMyIsImlhdCI6MTcwMjIwNDI5NSwiZXhwIjoxNzA5OTgwMjk1fQ.KABAVOmKVdgmWZbo2VilN-ElWOHBA9aMLMfr9kZMHdA',
 };
 
+const emailvarificationFailedResponse = {
+  message: 'user is not exist or token has expired',
+  status: 'fail',
+  stack:
+    'Error: user is not exist or token has expired\n    at /home/khushal/www/MY OWN PROJECTS/ROSEANDROBE/controller/authController.js:51:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',
+  isOperational: true,
+};
+
 const loginErrorResponse = {
   message: 'email or password is wrong',
   status: 'fail',
@@ -32,8 +40,22 @@ const loginErrorResponse = {
   isOperational: true,
 };
 
+const userSignupError = {
+  message:
+    'User validation failed: confirmPassword: confirm password is not same as password',
+  status: 'error',
+  stack:
+    'ValidationError: User validation failed: confirmPassword: confirm password is not same as password\n' +
+    '    at Document.invalidate (/home/khushal/www/MY OWN PROJECTS/ROSEANDROBE/node_modules/mongoose/lib/document.js:3173:32)\n' +
+    '    at /home/khushal/www/MY OWN PROJECTS/ROSEANDROBE/node_modules/mongoose/lib/document.js:2966:17\n' +
+    '    at /home/khushal/www/MY OWN PROJECTS/ROSEANDROBE/node_modules/mongoose/lib/schematype.js:1367:9\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)',
+};
+
 module.exports = {
   verificationEmailResponse,
   registrationResponseData,
+  emailvarificationFailedResponse,
   loginErrorResponse,
+  userSignupError,
 };
