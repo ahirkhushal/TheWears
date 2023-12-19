@@ -1,0 +1,45 @@
+name: Nodejs github Action
+
+on:
+  push:
+    branches: ['development']
+  pull_request:
+    branches: ['development']
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['16.x']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set up environment variables
+        run: |
+          echo "NODE_ENV=test" >> test.env
+          echo "PORT=2405" >> test.env
+          echo "JWT_EXPIRES_IN=90d" >> test.env
+          echo "OWNER_EMAIL=khushalahir31@gmail.com" >> test.env
+
+      - name: Set up secrets
+        run: |
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> test.env
+          echo "MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}" >> test.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> test.env
+          echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> test.env
+
+      - name: Run unit tests
+        run: npm run test

@@ -1,0 +1,33 @@
+{
+  "name": "roseandrobe",
+  "version": "1.0.0",
+  "description": "a women clothing brand",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "start:prod": "cross-env NODE_ENV=production nodemon server.js",
+    "test": "cross-env NODE_ENV=test mocha --timeout 10000000000 --silent"
+  },
+  "author": "khushal ahir",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "chai-exclude": "^2.1.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "mongoose": "^7.6.3",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.7",
+    "supertest": "^6.3.3",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0",
+    "sinon": "^17.0.1"
+  }
+}
