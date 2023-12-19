@@ -8,6 +8,8 @@ const {
   registrationResponseData,
   verificationEmailResponse,
   loginErrorResponse,
+  userSignupError,
+  emailvarificationFailedResponse,
 } = require('./data');
 
 const { expect } = chai;
@@ -50,13 +52,31 @@ describe('Authentication', () => {
 
     it('should verify email failed', async () => {
       const invalidToken = '123';
+
       response = await request(app)
         .post(`/api/v1/users/verificationEmail/${invalidToken}`)
         .expect(400);
 
-      expect(response.body.message).to.equal(
-        'user is not exist or token has expired'
-      );
+      expect(response.body)
+        .excludingEvery('stack')
+        .to.deep.equal(emailvarificationFailedResponse);
+    });
+
+    it('should not create a user', async () => {
+      const requestBody = {
+        username: 'khushal',
+        password: '123456456',
+        confirmPassword: '123456',
+      };
+
+      response = await request(app)
+        .post(`/api/v1/users/signupdetails/${userId}`)
+        .send(requestBody)
+        .expect(500);
+
+      expect(response.body)
+        .excludingEvery('stack')
+        .to.deep.equal(userSignupError);
     });
 
     it('should create a user', async () => {
@@ -88,6 +108,7 @@ describe('Authentication', () => {
         .excludingEvery(['_id', 'password', 'createdAt', 'token'])
         .to.deep.equal(registrationResponseData);
     });
+
     it('should not login the user', async () => {
       const requestBody = { email: 'test1@gmail.com', password: '1234564562' };
       response = await request(app)
