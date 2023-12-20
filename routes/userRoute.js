@@ -8,14 +8,20 @@ const {
 } = require('../controller/authController');
 const { dataGate } = require('../controller/usercontroller');
 const { protect } = require('../middleware/protect');
+const {
+  forgotPassword,
+  resetPassword,
+} = require('../controller/forgotPassword');
 
 const router = express.Router();
 
 router.post('/signup', signupVarificationEmailSend);
-router.post('/verificationEmail/:token', signupEmailVarify);
+router.post('/verificationEmail', signupEmailVarify);
 router.post('/signUpvalidation/:id', signUpValidation);
 router.post('/signupdetails/:id', signup);
 router.post('/login', login);
+router.post('/forgotPassword', forgotPassword);
+router.patch('/resetPassword', resetPassword);
 router.get('/getData/:id', protect, dataGate);
 
 router.get('/', (req, res) => {

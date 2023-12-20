@@ -5,7 +5,7 @@ const config = {
   auth: { user: process.env.OWNER_EMAIL, pass: process.env.EMAIL_PASS },
 };
 
-exports.EmailSender = async (to, subject, varificationLink) => {
+exports.EmailSender = async (to, subject, html) => {
   const verificationHtml = `
     <html>
       <head>
@@ -43,9 +43,7 @@ exports.EmailSender = async (to, subject, varificationLink) => {
       </head>
       <body>
         <div class="container">
-          <h1>Email Verification</h1>
-          <p>Dear User, <br> Welcome to our platform! To complete your registration, please click the link below to verify your email:</p>
-          <a class="verification-link" href=${varificationLink}>Verify Email</a>
+          ${html}
         </div>
       </body>
     </html>

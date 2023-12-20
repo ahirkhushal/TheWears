@@ -11,8 +11,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token)
     return next(new AppError('unauthorized user, please login.', 401));
 
-  console.log('ok');
-
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   const userData = await User.findById(decoded.id);
@@ -20,6 +18,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!userData)
     return next(new AppError('User not found or does not exist.', 400));
 
+  req.token = token;
   req.user = userData;
 
   next();

@@ -34,8 +34,7 @@ describe('Authentication', () => {
         .send(requestBody)
         .expect(200);
 
-      verificationToken = response.body.link.split('/').pop();
-
+      verificationToken = response.body.link.split('=').pop();
       expect(response.body)
         .excluding('link')
         .to.deep.equal(verificationEmailResponse);
@@ -43,7 +42,7 @@ describe('Authentication', () => {
 
     it('should verify email successfully', async () => {
       response = await request(app)
-        .post(`/api/v1/users/verificationEmail/${verificationToken}`)
+        .post(`/api/v1/users/verificationEmail?token=${verificationToken}`)
         .expect(200);
 
       userId = response.body.userData._id;
@@ -54,7 +53,7 @@ describe('Authentication', () => {
       const invalidToken = '123';
 
       response = await request(app)
-        .post(`/api/v1/users/verificationEmail/${invalidToken}`)
+        .post(`/api/v1/users/verificationEmail?token=${invalidToken}`)
         .expect(400);
 
       expect(response.body)
