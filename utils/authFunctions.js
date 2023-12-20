@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const AppError = require('./AppError');
+const { EmailVarificationHtml } = require('./EmailMessages');
 const { EmailSender } = require(process.env.NODE_ENV === 'test'
   ? '../test/mocks/nodemailerMock'
   : '../utils/email');
@@ -14,16 +15,15 @@ exports.emailVerificationLinkSent = async (userdata, email, req, res, next) => {
   await userdata.save({ validateBeforeSave: false });
 
   try {
-    const VerificationLink = `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/users/verificationEmail/${verfiyToken}`;
-
-    await EmailSender(email, 'verification of Email', VerificationLink);
+    const html = EmailVarificationHtml(req, verfiyToken);
+    await EmailSender(email, 'verification of Email', html);
 
     res.status(200).json({
       status: 'success',
       data: 'varification email send to your email',
-      link: VerificationLink,
+      link: `${req.protocol}://${req.get(
+        'host'
+      )}/api/v1/users/verificationEmail?token=${verfiyToken}`,
     });
   } catch (err) {
     console.log(err);

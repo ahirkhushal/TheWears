@@ -35,7 +35,7 @@ exports.signupVarificationEmailSend = catchAsync(async (req, res, next) => {
 
 // signup varification in email -------------------------------------------
 exports.signupEmailVarify = catchAsync(async (req, res, next) => {
-  const { token } = req.params;
+  const { token } = req.query;
 
   const verificationCode = crypto
     .createHash('sha256')

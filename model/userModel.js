@@ -48,7 +48,9 @@ const userschema = mongoose.Schema({
     },
   },
   EmailVarificationToken: String,
+  passwordResetToken: String,
   EmailvarificationExpires: Date,
+  passwordResetTokenExpires: Date,
   SignUpTImeExpires: Date,
   createdAt: String,
 });
@@ -70,6 +72,19 @@ userschema.methods.createEmailVarificationToken = function () {
     .digest('hex');
 
   this.EmailvarificationExpires = Date.now() + 10 * 60 * 1000;
+
+  return varifyToken;
+};
+
+userschema.methods.createPasswordResetToken = function () {
+  const varifyToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(varifyToken)
+    .digest('hex');
+
+  this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
 
   return varifyToken;
 };
