@@ -13,6 +13,7 @@ const {
   forgotPasswordFailresponse,
   forgotpasswordResponse,
   resetPasswordFailResponse,
+  resetPasswordValidationFailResponse,
 } = require('./data');
 
 const { expect } = chai;
@@ -171,6 +172,22 @@ describe('forgot and reset Passwrod', () => {
     expect(response.body)
       .excluding('stack')
       .to.deep.equal(resetPasswordFailResponse);
+  });
+
+  it('should fail to cahnge the password', async () => {
+    const requestBody = {
+      password: '123132323',
+      confirmPassword: '12323',
+    };
+
+    response = await request(app)
+      .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
+      .send(requestBody)
+      .expect(500);
+
+    expect(response.body)
+      .excluding('stack')
+      .to.deep.equal(resetPasswordValidationFailResponse);
   });
 
   it('should reset the password', async () => {

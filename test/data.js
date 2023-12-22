@@ -68,6 +68,14 @@ const forgotPasswordFailresponse = {
   isOperational: true,
 };
 
+const resetPasswordValidationFailResponse = {
+  message:
+    'User validation failed: confirmPassword: confirm password is not same as password',
+  status: 'error',
+  stack:
+    'ValidationError: User validation failed: confirmPassword: confirm password is not same as password\n    at Document.invalidate (/home/khushal/www/myprojects/RoseAndRobe/node_modules/mongoose/lib/document.js:3173:32)\n    at /home/khushal/www/myprojects/RoseAndRobe/node_modules/mongoose/lib/document.js:2966:17\n    at /home/khushal/www/myprojects/RoseAndRobe/node_modules/mongoose/lib/schematype.js:1367:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)',
+};
+
 const resetPasswordFailResponse = {
   message: 'user is not exist or token has expired',
   status: 'fail',
@@ -85,4 +93,5 @@ module.exports = {
   forgotpasswordResponse,
   forgotPasswordFailresponse,
   resetPasswordFailResponse,
+  resetPasswordValidationFailResponse,
 };
