@@ -10,6 +10,9 @@ const {
   loginErrorResponse,
   userSignupError,
   emailvarificationFailedResponse,
+  forgotPasswordFailresponse,
+  forgotpasswordResponse,
+  resetPasswordFailResponse,
 } = require('./data');
 
 const { expect } = chai;
@@ -119,9 +122,68 @@ describe('Authentication', () => {
         .to.deep.equal(loginErrorResponse);
     });
   });
+});
 
-  after(async () => {
-    await User.deleteMany();
-    process.exit(0);
+describe('forgot and reset Passwrod', () => {
+  let response;
+  let verifyToken;
+  const requestBody = {
+    password: '123123123',
+    confirmPassword: '123123123',
+  };
+
+  it('should send a resetPassword link', async () => {
+    const requestBody = { email: 'test@gmail.com' };
+
+    response = await request(app)
+      .post('/api/v1/users/forgotPassword')
+      .send(requestBody)
+      .expect(200);
+
+    verifyToken = response.body.resetToken;
+
+    expect(response.body)
+      .excluding('resetToken')
+      .to.deep.equal(forgotpasswordResponse);
   });
+
+  it('should fail to send resetPassword link', async () => {
+    const requestBody = { email: 'test1@gmail.com' };
+
+    response = await request(app)
+      .post('/api/v1/users/forgotPassword')
+      .send(requestBody)
+      .expect(400);
+
+    expect(response.body)
+      .excluding('stack')
+      .to.deep.equal(forgotPasswordFailresponse);
+  });
+
+  it('should not reset the password', async () => {
+    let verifyToken = 123;
+
+    response = await request(app)
+      .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
+      .send(requestBody)
+      .expect(400);
+
+    expect(response.body)
+      .excluding('stack')
+      .to.deep.equal(resetPasswordFailResponse);
+  });
+
+  it('should reset the password', async () => {
+    response = await request(app)
+      .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
+      .send(requestBody)
+      .expect(200);
+
+    expect(response.body.message).to.equal('password successfully changed');
+  });
+});
+
+after(async () => {
+  await User.deleteMany();
+  process.exit(0);
 });

@@ -2,7 +2,10 @@ const crypto = require('crypto');
 const User = require('../model/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
-const { EmailSender } = require('../utils/email');
+const { EmailSender } = require(process.env.NODE_ENV === 'test'
+  ? '../test/mocks/nodemailerMock'
+  : '../utils/email');
+
 const { resetPasswordEmail } = require('../utils/EmailMessages');
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
@@ -11,24 +14,24 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     isVarified: true,
   });
 
-  if (!userData) return next(new AppError('this email does not exist'), 400);
+  if (!userData) return next(new AppError('this email does not exist', 400));
 
   const resetToken = userData.createPasswordResetToken();
   await userData.save({ validateBeforeSave: false });
 
   try {
     const html = resetPasswordEmail(req, resetToken);
-
     await EmailSender(req.body.email, 'reset Password', html);
 
-    res
-      .status(200)
-      .json({ message: 'forgotPassword mail send to you email address' });
+    res.status(200).json({
+      message: 'forgotPassword mail send to you email address',
+      resetToken,
+    });
   } catch (error) {
     userData.passwordResetToken = undefined;
     userData.passwordResetTokenExpires = undefined;
     await userData.save({ validateBeforeSave: false });
-
+    console.log(error);
     return next(
       new AppError(
         'there was an error sending the email. try again later!',
