@@ -31,7 +31,6 @@ exports.emailVerificationLinkSent = async (userdata, email, req, res, next) => {
     userdata.EmailvarificationExpires = undefined;
 
     await userdata.save({ validateBeforeSave: false });
-
     return next(
       new AppError(
         'there was an error to sending the Email! please try again later!',

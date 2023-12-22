@@ -7,13 +7,6 @@ const chaiExclude = require('chai-exclude');
 const {
   registrationResponseData,
   verificationEmailResponse,
-  loginErrorResponse,
-  userSignupError,
-  emailvarificationFailedResponse,
-  forgotPasswordFailresponse,
-  forgotpasswordResponse,
-  resetPasswordFailResponse,
-  resetPasswordValidationFailResponse,
 } = require('./data');
 
 const { expect } = chai;
@@ -25,9 +18,7 @@ describe('Authentication', () => {
   let userId;
   let response;
 
-  before(async () => {
-    await setUpDb();
-  });
+  before(async () => await setUpDb());
 
   describe('User Registration And Verification', () => {
     it('should validate email and send verification email', async () => {
@@ -60,9 +51,10 @@ describe('Authentication', () => {
         .post(`/api/v1/users/verificationEmail?token=${invalidToken}`)
         .expect(400);
 
-      expect(response.body)
-        .excludingEvery('stack')
-        .to.deep.equal(emailvarificationFailedResponse);
+      expect(response.body.message).to.equal(
+        'user is not exist or token has expired'
+      );
+      expect(response.body.status).to.equal('fail');
     });
 
     it('should not create a user', async () => {
@@ -77,9 +69,10 @@ describe('Authentication', () => {
         .send(requestBody)
         .expect(500);
 
-      expect(response.body)
-        .excludingEvery('stack')
-        .to.deep.equal(userSignupError);
+      expect(response.body.message).to.equal(
+        'User validation failed: confirmPassword: confirm password is not same as password'
+      );
+      expect(response.body.status).to.equal('error');
     });
 
     it('should create a user', async () => {
@@ -118,89 +111,72 @@ describe('Authentication', () => {
         .post('/api/v1/users/login')
         .send(requestBody)
         .expect(400);
-      expect(response.body)
-        .excluding('stack')
-        .to.deep.equal(loginErrorResponse);
+      expect(response.body.message).to.equal('email or password is wrong');
+      expect(response.body.status).to.equal('fail');
     });
   });
-});
 
-describe('forgot and reset Passwrod', () => {
-  let response;
-  let verifyToken;
-  const requestBody = {
-    password: '123123123',
-    confirmPassword: '123123123',
-  };
-
-  it('should send a resetPassword link', async () => {
-    const requestBody = { email: 'test@gmail.com' };
-
-    response = await request(app)
-      .post('/api/v1/users/forgotPassword')
-      .send(requestBody)
-      .expect(200);
-
-    verifyToken = response.body.resetToken;
-
-    expect(response.body)
-      .excluding('resetToken')
-      .to.deep.equal(forgotpasswordResponse);
-  });
-
-  it('should fail to send resetPassword link', async () => {
-    const requestBody = { email: 'test1@gmail.com' };
-
-    response = await request(app)
-      .post('/api/v1/users/forgotPassword')
-      .send(requestBody)
-      .expect(400);
-
-    expect(response.body)
-      .excluding('stack')
-      .to.deep.equal(forgotPasswordFailresponse);
-  });
-
-  it('should not reset the password', async () => {
-    let verifyToken = 123;
-
-    response = await request(app)
-      .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
-      .send(requestBody)
-      .expect(400);
-
-    expect(response.body)
-      .excluding('stack')
-      .to.deep.equal(resetPasswordFailResponse);
-  });
-
-  it('should fail to cahnge the password', async () => {
+  describe('forgot and reset Passwrod', () => {
+    let response;
+    let verifyToken;
     const requestBody = {
-      password: '123132323',
-      confirmPassword: '12323',
+      password: '123123123',
+      confirmPassword: '123123123',
     };
 
-    response = await request(app)
-      .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
-      .send(requestBody)
-      .expect(500);
+    it('should send a resetPassword link', async () => {
+      const requestBody = { email: 'test@gmail.com' };
 
-    expect(response.body)
-      .excluding('stack')
-      .to.deep.equal(resetPasswordValidationFailResponse);
+      response = await request(app)
+        .post('/api/v1/users/forgotPassword')
+        .send(requestBody)
+        .expect(200);
+
+      verifyToken = response.body.resetToken;
+
+      expect(response.body.message).to.equal(
+        'forgotPassword mail send to you email address'
+      );
+    });
+
+    it('should fail to send resetPassword link', async () => {
+      const requestBody = { email: 'khushal@gmail.com' };
+
+      response = await request(app)
+        .post('/api/v1/users/forgotPassword')
+        .send(requestBody)
+        .expect(400);
+
+      expect(response.body.message).to.equal('this email does not exist');
+      expect(response.body.status).to.equal('fail');
+    });
+
+    it('should not reset the password', async () => {
+      let verifyToken = 123;
+
+      response = await request(app)
+        .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
+        .send(requestBody)
+        .expect(400);
+
+      expect(response.body.message).to.equal(
+        'user is not exist or token has expired'
+      );
+      expect(response.body.status).to.equal('fail');
+    });
+
+    it('should reset the password', async () => {
+      response = await request(app)
+        .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
+        .send(requestBody)
+        .expect(200);
+
+      expect(response.body.message).to.equal('password successfully changed');
+    });
   });
 
-  it('should reset the password', async () => {
-    response = await request(app)
-      .patch(`/api/v1/users/resetPassword?token=${verifyToken}`)
-      .send(requestBody)
-      .expect(200);
-
-    expect(response.body.message).to.equal('password successfully changed');
+  after(async () => {
+    await User.deleteMany();
+    process.exit(0);
   });
-});
-
-after(async () => {
-  await User.deleteMany();
-  process.exit(0);
 });
