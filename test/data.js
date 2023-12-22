@@ -52,10 +52,37 @@ const userSignupError = {
     '    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)',
 };
 
+const forgotpasswordResponse = {
+  message: 'forgotPassword mail send to you email address',
+  resetToken:
+    '3fd103106d9cab6e5fdc7581f10233c9cc4d880a1e28ab38f23484e01183500b',
+};
+
+const forgotPasswordFailresponse = {
+  message: 'this email does not exist',
+  status: 'fail',
+  stack:
+    'Error: this email does not exist\n' +
+    '    at /home/khushal/www/myprojects/RoseAndRobe/controller/forgotPassword.js:16:30\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',
+  isOperational: true,
+};
+
+const resetPasswordFailResponse = {
+  message: 'user is not exist or token has expired',
+  status: 'fail',
+  stack:
+    'Error: user is not exist or token has expired\n    at /home/khushal/www/myprojects/RoseAndRobe/controller/forgotPassword.js:55:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',
+  isOperational: true,
+};
+
 module.exports = {
   verificationEmailResponse,
   registrationResponseData,
   emailvarificationFailedResponse,
   loginErrorResponse,
   userSignupError,
+  forgotpasswordResponse,
+  forgotPasswordFailresponse,
+  resetPasswordFailResponse,
 };
