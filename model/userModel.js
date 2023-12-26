@@ -8,35 +8,42 @@ const userschema = mongoose.Schema({
     type: String,
     required: [true, 'username is required'],
   },
+
   email: {
     type: String,
     required: [true, 'email address is required'],
     unique: [true, 'this email is already exist'],
     validate: [validator.isEmail, 'please enter valud email address'],
   },
+
   role: {
     type: String,
     default: 'user',
     enum: ['user', 'admin'],
   },
+
   photo: {
     type: String,
     default: 'default.jpg',
   },
+
   isVarified: {
     type: Boolean,
     default: false,
   },
+
   EmailisVarified: {
     type: Boolean,
     default: false,
   },
+
   password: {
     type: String,
     required: [true, 'password is required'],
     minlength: [8, 'password should contain minimum 8 characters'],
     select: false,
   },
+
   confirmPassword: {
     type: String,
     required: [true, 'confirm password is required'],
@@ -47,6 +54,7 @@ const userschema = mongoose.Schema({
       message: 'confirm password is not same as password',
     },
   },
+
   EmailVarificationToken: String,
   passwordResetToken: String,
   EmailvarificationExpires: Date,

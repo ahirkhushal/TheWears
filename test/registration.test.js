@@ -14,6 +14,7 @@ const { expect } = chai;
 chai.use(chaiExclude);
 
 describe('Authentication', () => {
+  let bearerToken;
   let verificationToken;
   let userId;
   let response;
@@ -100,6 +101,9 @@ describe('Authentication', () => {
         .post('/api/v1/users/login')
         .send(requestBody)
         .expect(200);
+
+      bearerToken = response.body.token;
+
       expect(response.body)
         .excludingEvery(['_id', 'password', 'createdAt', 'token'])
         .to.deep.equal(registrationResponseData);
@@ -172,6 +176,58 @@ describe('Authentication', () => {
         .expect(200);
 
       expect(response.body.message).to.equal('password successfully changed');
+    });
+
+    it('should update the password', async () => {
+      const requestBody = {
+        currentPassword: '123123123',
+        newPassword: '1231454545',
+        confirmPassword: '1231454545',
+      };
+
+      response = await request(app)
+        .patch('/api/v1/users/updatePassword')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(requestBody)
+        .expect(200);
+
+      expect(response.body.message).to.equal('password updated successfully');
+    });
+
+    it('should not update the password', async () => {
+      const requestBody = {
+        currentPassword: '123123111',
+        newPassword: '1231454545',
+        confirmPassword: '1231454545',
+      };
+
+      response = await request(app)
+        .patch('/api/v1/users/updatePassword')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(requestBody)
+        .expect(400);
+
+      expect(response.body.message).to.equal(
+        'current password is incorreect! please try again'
+      );
+    });
+
+    it('should give validation error while update password', async () => {
+      const requestBody = {
+        currentPassword: '1231454545',
+        newPassword: '123145',
+        confirmPassword: '1231454545',
+      };
+
+      response = await request(app)
+        .patch('/api/v1/users/updatePassword')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(requestBody)
+        .expect(500);
+
+      expect(response.body.message).to.equal(
+        'User validation failed: password: password should contain minimum 8 characters, confirmPassword: confirm password is not same as password'
+      );
     });
   });
 
