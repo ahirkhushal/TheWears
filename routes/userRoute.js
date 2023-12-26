@@ -11,6 +11,7 @@ const { protect } = require('../middleware/protect');
 const {
   forgotPassword,
   resetPassword,
+  updatePassword,
 } = require('../controller/forgotPassword');
 
 const router = express.Router();
@@ -22,6 +23,7 @@ router.post('/signupdetails/:id', signup);
 router.post('/login', login);
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword', resetPassword);
+router.patch('/updatePassword', protect, updatePassword);
 router.get('/getData/:id', protect, dataGate);
 
 router.get('/', (req, res) => {

@@ -1,12 +1,13 @@
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const { EmailSender } = require(process.env.NODE_ENV === 'test'
   ? '../test/mocks/nodemailerMock'
   : '../utils/email');
-
 const { resetPasswordEmail } = require('../utils/EmailMessages');
+const { promisify } = require('util');
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const userData = await User.findOne({
@@ -61,4 +62,28 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await userData.save();
 
   res.status(200).json({ message: 'password successfully changed' });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const decode = await promisify(jwt.verify)(req.token, process.env.JWT_SECRET);
+
+  if (!decode) return next(new AppError('please authenticate', 401));
+
+  const userdata = await User.findById(decode.id).select('+password');
+
+  if (
+    !(await userdata.passwordCorrectCheck(
+      req.body.currentPassword,
+      userdata.password
+    ))
+  )
+    return next(
+      new AppError('current password is incorreect! please try again', 400)
+    );
+
+  userdata.password = req.body.newPassword;
+  userdata.confirmPassword = req.body.confirmPassword;
+  await userdata.save();
+
+  res.status(200).json({ message: 'password updated successfully' });
 });
