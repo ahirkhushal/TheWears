@@ -8,6 +8,8 @@ const { promisify } = require('util');
 exports.protect = catchAsync(async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
 
+  console.log(token);
+
   if (!token)
     return next(new AppError('unauthorized user, please login.', 401));
 

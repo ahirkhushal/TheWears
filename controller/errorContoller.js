@@ -5,6 +5,7 @@ const handleCastErrorDB = (err) => {
 
   return new AppError(message, 400);
 };
+
 const handleError = (err) =>
   new AppError(`${err.message} please login again`, 401);
 
@@ -22,6 +23,7 @@ const handleValidationErrorDb = (err) => {
 };
 
 const sendErrDev = (err, res) => {
+  // console.log(err);
   res.status(err.statuscode).json({
     message: err.message,
     status: err.status,

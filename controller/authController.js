@@ -102,7 +102,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   userData.isVarified = true;
   await userData.save();
 
-  tokenGenrate(res, userData);
+  tokenGenrate(res, 201, userData);
 });
 
 //LOG-IN-----------------------------------------------------------------------------
@@ -120,5 +120,14 @@ exports.login = catchAsync(async (req, res, next) => {
   )
     return next(new AppError('email or password is wrong', 400));
 
-  tokenGenrate(res, userData);
+  tokenGenrate(res, 200, userData);
+});
+
+//ADMIN---------------------------------------------------------------------------------
+exports.admin = catchAsync(async (req, res, next) => {
+  if (req.user.role === 'admin') next();
+  else
+    return next(
+      new AppError('you have not authority to access this route', 403)
+    );
 });

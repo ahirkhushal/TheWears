@@ -4,6 +4,7 @@ const { EmailVarificationHtml } = require('./EmailMessages');
 const { EmailSender } = require(process.env.NODE_ENV === 'test'
   ? '../test/mocks/nodemailerMock'
   : '../utils/email');
+const { promisify } = require('util');
 
 //signup handler function-----------------------------------------------------------
 
@@ -49,10 +50,18 @@ exports.signUpTimeValidator = async (condition, userData, next) => {
   }
 };
 
-exports.tokenGenrate = (res, userData) => {
+exports.tokenGenrate = (res, statusCode, userData) => {
   const token = jwt.sign({ id: userData.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-  res.status(200).json({ status: 'success', data: userData, token });
+  res.status(statusCode).json({ status: 'success', data: userData, token });
+};
+
+exports.tokenVerify = async (token) => {
+  const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  if (!decode) return next(new AppError('please authenticate', 401));
+
+  return decode;
 };

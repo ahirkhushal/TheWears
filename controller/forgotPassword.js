@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
@@ -7,7 +6,7 @@ const { EmailSender } = require(process.env.NODE_ENV === 'test'
   ? '../test/mocks/nodemailerMock'
   : '../utils/email');
 const { resetPasswordEmail } = require('../utils/EmailMessages');
-const { promisify } = require('util');
+const { tokenVerify, tokenGenrate } = require('../utils/authFunctions');
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const userData = await User.findOne({
@@ -61,13 +60,13 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   userData.passwordResetTokenExpires = undefined;
   await userData.save();
 
-  res.status(200).json({ message: 'password successfully changed' });
+  tokenGenrate(res, 200, userData);
+
+  // res.status(200).json({ message: 'password successfully changed' });
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-  const decode = await promisify(jwt.verify)(req.token, process.env.JWT_SECRET);
-
-  if (!decode) return next(new AppError('please authenticate', 401));
+  const decode = await tokenVerify(req.token);
 
   const userdata = await User.findById(decode.id).select('+password');
 
@@ -85,5 +84,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   userdata.confirmPassword = req.body.confirmPassword;
   await userdata.save();
 
-  res.status(200).json({ message: 'password updated successfully' });
+  tokenGenrate(res, 200, userdata);
+
+  // res.status(200).json({ message: 'password updated successfully' });
 });
