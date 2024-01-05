@@ -6,7 +6,12 @@ const {
   login,
   signUpValidation,
 } = require('../controller/authController');
-const { dataGate } = require('../controller/usercontroller');
+const {
+  dataGet,
+  userProfileUpdate,
+  uploadUserPhoto,
+  userProfileDelete,
+} = require('../controller/usercontroller');
 const { protect } = require('../middleware/protect');
 const {
   forgotPassword,
@@ -22,9 +27,11 @@ router.post('/signUpvalidation/:id', signUpValidation);
 router.post('/signupdetails/:id', signup);
 router.post('/login', login);
 router.post('/forgotPassword', forgotPassword);
+router.get('/getData/:id', protect, dataGet);
 router.patch('/resetPassword', resetPassword);
 router.patch('/updatePassword', protect, updatePassword);
-router.get('/getData/:id', protect, dataGate);
+router.patch('/userProfileUpdate', protect, uploadUserPhoto, userProfileUpdate);
+router.delete('/userProfileDelete', protect, userProfileDelete);
 
 router.get('/', (req, res) => {
   res.status(200).json({ statis: 'success' });

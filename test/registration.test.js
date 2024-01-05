@@ -86,7 +86,7 @@ describe('Authentication', () => {
       response = await request(app)
         .post(`/api/v1/users/signupdetails/${userId}`)
         .send(requestBody)
-        .expect(200);
+        .expect(201);
 
       expect(response.body)
         .excludingEvery(['_id', 'password', 'createdAt', 'token'])
@@ -103,7 +103,6 @@ describe('Authentication', () => {
         .expect(200);
 
       bearerToken = response.body.token;
-
       expect(response.body)
         .excludingEvery(['_id', 'password', 'createdAt', 'token'])
         .to.deep.equal(registrationResponseData);
@@ -175,7 +174,9 @@ describe('Authentication', () => {
         .send(requestBody)
         .expect(200);
 
-      expect(response.body.message).to.equal('password successfully changed');
+      expect(response.body)
+        .excludingEvery(['_id', 'password', 'createdAt', 'token'])
+        .to.deep.equal(registrationResponseData);
     });
 
     it('should update the password', async () => {
@@ -191,7 +192,9 @@ describe('Authentication', () => {
         .send(requestBody)
         .expect(200);
 
-      expect(response.body.message).to.equal('password updated successfully');
+      expect(response.body)
+        .excludingEvery(['_id', 'password', 'createdAt', 'token'])
+        .to.deep.equal(registrationResponseData);
     });
 
     it('should not update the password', async () => {
