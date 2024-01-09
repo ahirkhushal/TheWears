@@ -73,11 +73,75 @@ describe('products tests', async () => {
       response = await request(app)
         .patch(`/api/v1/products/productUpdate?id=${id}`)
         .set('Authorization', `Bearer ${BearerToken}`)
-        .send(requestBody);
+        .send(requestBody)
+        .expect(200);
 
       expect(response.body)
         .excludingEvery(['createdAt', '_id', '__v'])
         .to.deep.equal(updatedProductResponse);
+    });
+
+    it('should not update the product', async () => {
+      const id = '585123787878787544957488';
+
+      const requestBody = {
+        category: 'error',
+      };
+
+      response = await request(app)
+        .patch(`/api/v1/products/productUpdate?id=${id}`)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .send(requestBody)
+        .expect(404);
+
+      expect(response.body.message).to.deep.equal('Product not found');
+    });
+  });
+
+  describe('delete products', () => {
+    it('should delete the image', async () => {
+      const requestBody = { image: 'mock-image-4.jpg' };
+
+      response = await request(app)
+        .delete(`/api/v1/products/deleteImage?id=${id}`)
+        .send(requestBody)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .expect(200);
+
+      expect(response.body.message).to.equal('image successfully deleted!');
+    });
+
+    it('should not delete the image', async () => {
+      const id = '585123787878787544957488';
+      const requestBody = { image: 'mock-image-4.jpg' };
+
+      response = await request(app)
+        .delete(`/api/v1/products/deleteImage?id=${id}`)
+        .send(requestBody)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .expect(404);
+
+      expect(response.body.message).to.equal('document is not found');
+    });
+
+    it('should not delete product', async () => {
+      const id = '585123787878787544957488';
+
+      response = await request(app)
+        .delete(`/api/v1/products/productDelete?id=${id}`)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .expect(404);
+
+      expect(response.body.message).to.equal('document is not found');
+    });
+
+    it('should delete product', async () => {
+      response = await request(app)
+        .delete(`/api/v1/products/productDelete?id=${id}`)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .expect(200);
+
+      expect(response.body.message).to.equal('product successfully deleted!');
     });
   });
 });
