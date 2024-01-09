@@ -96,6 +96,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   userData.username = req.body.username;
   userData.password = req.body.password;
+  userData.role = req.body.role || 'user';
   userData.confirmPassword = req.body.confirmPassword;
   userData.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
   userData.SignUpTImeExpires = undefined;

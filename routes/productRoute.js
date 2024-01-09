@@ -3,10 +3,11 @@ const {
   productPost,
   reviewProduct,
   updateProduct,
-  multerUploadProduct,
   deleteProduct,
   deleteImage,
 } = require('../controller/productController');
+const { multerUploadProduct } = require('../controller/productController');
+
 const { protect } = require('../middleware/protect');
 const { admin } = require('../controller/authController');
 
