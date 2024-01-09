@@ -1,13 +1,12 @@
 const chai = require('chai');
 const request = require('supertest');
 const app = require('../app');
-const User = require('../model/userModel');
-const { setUpDb } = require('./fixtures/db');
 const chaiExclude = require('chai-exclude');
 const {
   registrationResponseData,
   verificationEmailResponse,
 } = require('./data');
+const { setBearerToken } = require('./c-tokenManager');
 
 const { expect } = chai;
 
@@ -18,8 +17,6 @@ describe('Authentication', () => {
   let verificationToken;
   let userId;
   let response;
-
-  before(async () => await setUpDb());
 
   describe('User Registration And Verification', () => {
     it('should validate email and send verification email', async () => {
@@ -81,6 +78,7 @@ describe('Authentication', () => {
         username: 'khushal',
         password: '123456456',
         confirmPassword: '123456456',
+        role: 'admin',
       };
 
       response = await request(app)
@@ -102,7 +100,11 @@ describe('Authentication', () => {
         .send(requestBody)
         .expect(200);
 
+      // console.log(response.body);
+
       bearerToken = response.body.token;
+      setBearerToken(bearerToken);
+
       expect(response.body)
         .excludingEvery(['_id', 'password', 'createdAt', 'token'])
         .to.deep.equal(registrationResponseData);
@@ -232,10 +234,5 @@ describe('Authentication', () => {
         'User validation failed: password: password should contain minimum 8 characters, confirmPassword: confirm password is not same as password'
       );
     });
-  });
-
-  after(async () => {
-    await User.deleteMany();
-    process.exit(0);
   });
 });
