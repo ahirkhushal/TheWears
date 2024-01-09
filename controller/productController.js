@@ -73,13 +73,14 @@ const deleteProduct = catchAsync(async (req, res, next) => {
 
   if (!productData) return next(new AppError('document is not found', 404));
 
-  productData.images
-    .map((image) => path.join(__dirname, '..', 'public', 'img', image))
-    .forEach((img) =>
-      fs.unlink(img, (err) =>
-        err ? console.log(err.message) : console.log('image deleted')
-      )
-    );
+  process.env.NODE_ENV === 'test' ||
+    productData.images
+      .map((image) => path.join(__dirname, '..', 'public', 'img', image))
+      .forEach((img) =>
+        fs.unlink(img, (err) =>
+          err ? console.log(err) : console.log('image deleted')
+        )
+      );
 
   await Product.deleteOne({ _id: productData.id });
 
@@ -98,9 +99,12 @@ const deleteImage = catchAsync(async (req, res, next) => {
 
   const imagePath = path.join(__dirname, '..', 'public', 'img', req.body.image);
 
-  fs.unlink(imagePath, (err) =>
-    err ? console.log(err.message) : console.log('image deleted')
-  );
+  process.env.NODE_ENV === 'test' ||
+    fs.unlink(imagePath, (err) =>
+      err
+        ? next(new AppError('image not found', 404))
+        : console.log('image deleted')
+    );
 
   productData.images = newImages;
   await productData.save();
