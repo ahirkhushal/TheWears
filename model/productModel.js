@@ -24,7 +24,6 @@ const productSchema = mongoose.Schema({
     type: Number,
     validate: {
       validator: function (val) {
-        console.log(val, this.price);
         return val < this.price;
       },
       message: 'discount price ({VALUE}) shoud be below the regular price',
