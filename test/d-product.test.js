@@ -99,18 +99,6 @@ describe('products tests', async () => {
   });
 
   describe('delete products', () => {
-    it('should delete the image', async () => {
-      const requestBody = { image: 'mock-image-4.jpg' };
-
-      response = await request(app)
-        .delete(`/api/v1/products/deleteImage?id=${id}`)
-        .send(requestBody)
-        .set('Authorization', `Bearer ${BearerToken}`)
-        .expect(200);
-
-      expect(response.body.message).to.equal('image successfully deleted!');
-    });
-
     it('should not delete the image', async () => {
       const id = '585123787878787544957488';
       const requestBody = { image: 'mock-image-4.jpg' };
@@ -122,6 +110,18 @@ describe('products tests', async () => {
         .expect(404);
 
       expect(response.body.message).to.equal('document is not found');
+    });
+
+    it('should delete the image', async () => {
+      const requestBody = { image: 'mock-image-4.jpg' };
+
+      response = await request(app)
+        .delete(`/api/v1/products/deleteImage?id=${id}`)
+        .send(requestBody)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .expect(200);
+
+      expect(response.body.message).to.equal('image successfully deleted!');
     });
 
     it('should not delete product', async () => {
