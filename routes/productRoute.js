@@ -1,7 +1,8 @@
 const express = require('express');
 const {
   productPost,
-  reviewProduct,
+  reviewAllProduct,
+  reviewOneProduct,
   updateProduct,
   deleteProduct,
   deleteImage,
@@ -14,7 +15,8 @@ const { admin } = require('../controller/authController');
 const router = express.Router();
 
 router.post('/productPost', protect, admin, multerUploadProduct, productPost);
-router.get('/productReview', reviewProduct);
+router.get('/productReview', reviewAllProduct);
+router.get('/OneProduct', protect, reviewOneProduct);
 
 router.use(protect, admin);
 

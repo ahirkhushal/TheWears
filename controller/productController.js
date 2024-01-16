@@ -32,12 +32,22 @@ const productPost = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: productData });
 });
 
-const reviewProduct = catchAsync(async (req, res, next) => {
+const reviewAllProduct = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Product.find(), req.query).filter().sort();
 
   const productData = await features.query;
 
   res.status(200).json({ data: productData });
+});
+
+const reviewOneProduct = catchAsync(async (req, res, next) => {
+  const productData = await Product.findById(req.query.product).populate(
+    'reviews'
+  );
+
+  if (!productData) return next(new AppError('product does not exist', 400));
+
+  res.status(200).json({ status: 'success', data: productData });
 });
 
 const updateProduct = catchAsync(async (req, res, next) => {
@@ -114,11 +124,13 @@ const deleteImage = catchAsync(async (req, res, next) => {
     message: 'image successfully deleted!',
   });
 });
+// .populate('reviews');
 
 module.exports = {
   productPost,
   multerUploadProduct,
-  reviewProduct,
+  reviewAllProduct,
+  reviewOneProduct,
   updateProduct,
   deleteProduct,
   deleteImage,

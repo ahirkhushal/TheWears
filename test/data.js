@@ -47,6 +47,7 @@ const productPostResponse = {
     _id: '659aa0451a18a9b85fa99661',
     slug: 'loose-slives',
     __v: 0,
+    id: '659aa0451a18a9b85fa99661',
   },
 };
 
@@ -75,6 +76,7 @@ const updatedProductResponse = {
     createdAt: 'January 9th 2024, 12:21:49 am',
     slug: 'loose',
     __v: 1,
+    id: '659c444591ea18e17a2a8f49',
   },
 };
 

@@ -40,20 +40,30 @@ describe('products tests', async () => {
         .expect(200);
 
       id = response.body.data._id;
-
       expect(response.body)
-        .excludingEvery(['createdAt', '_id', '__v'])
+        .excludingEvery(['createdAt', '_id', '__v', 'id'])
         .to.deep.equal(productPostResponse);
     });
 
-    it('should review the product', async () => {
+    it('should review multiple products', async () => {
       response = await request(app)
         .get('/api/v1/products/productReview')
         .expect(200);
 
       expect(response.body.data[0])
-        .excludingEvery(['createdAt', '_id', '__v'])
+        .excludingEvery(['createdAt', '_id', '__v', 'id'])
         .to.deep.equal(productPostResponse.data);
+    });
+
+    it('should review single product', async () => {
+      response = await request(app)
+        .get(`/api/v1/products/OneProduct?product=${id}`)
+        .set('Authorization', `Bearer ${BearerToken}`)
+        .expect(200);
+
+      expect(response.body)
+        .excludingEvery(['createdAt', '_id', '__v', 'id', 'reviews'])
+        .to.deep.equal(productPostResponse);
     });
   });
 
@@ -77,7 +87,7 @@ describe('products tests', async () => {
         .expect(200);
 
       expect(response.body)
-        .excludingEvery(['createdAt', '_id', '__v'])
+        .excludingEvery(['createdAt', '_id', '__v', 'id'])
         .to.deep.equal(updatedProductResponse);
     });
 
