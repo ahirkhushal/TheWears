@@ -1,4 +1,5 @@
 const multer = require('multer');
+const AppError = require('../utils/AppError');
 
 const multerUpload = (arg) => {
   const multerStorage = multer.diskStorage({
@@ -6,10 +7,11 @@ const multerUpload = (arg) => {
       cb(null, 'public/img');
     },
     filename: (req, file, cb) => {
-      const name =
-        arg === 'product'
-          ? `product-${file.originalname.split('.')[0]}-${Date.now()}`
-          : `user-${req.user.id}-${Date.now()}`;
+      let name = `${arg}-${
+        arg === 'user' || arg === 'review'
+          ? req.user.id
+          : file.originalname.split('.')[0]
+      }-${Date.now()}`;
 
       const ext = file.mimetype.split('/')[1];
       const filename = [name, ext].join('.');
