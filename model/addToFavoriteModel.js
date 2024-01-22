@@ -1,10 +1,24 @@
 const mongoose = require('mongoose');
 
-const addToFavoriteSchema = mongoose.Schema({
+const addToFavouriteSchema = mongoose.Schema({
   user: { type: mongoose.Schema.ObjectId, ref: 'User', require: true },
-  tour: { type: mongoose.Schema.ObjectId, ref: 'Tour', require: true },
+  product: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Product',
+    required: true,
+    unique: [true, 'you already selected this product for favourite list!'],
+  },
 });
 
-const AddToFavorite = mongoose.model('AddToFavorite', addToFavoriteSchema);
+addToFavouriteSchema.pre(/^find/, function (next) {
+  this.populate({ path: 'product' }).populate({
+    path: 'user',
+    select: 'username',
+  });
 
-module.exports = AddToFavorite;
+  next();
+});
+
+const AddToFavourite = mongoose.model('AddToFavourite', addToFavouriteSchema);
+
+module.exports = AddToFavourite;

@@ -34,7 +34,7 @@ const reviewPost = catchAsync(async (req, res, next) => {
 });
 
 const getAllReviews = catchAsync(async (req, res, next) => {
-  const review = await Review.find();
+  const review = await Review.find({ product: req.query.product });
 
   if (review.length === 0)
     return res.status(200).json({

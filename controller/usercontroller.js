@@ -32,13 +32,20 @@ const multerUpload = require('../utils/multerUpload');
 const upload = multerUpload('user');
 exports.uploadUserPhoto = upload.single('photo');
 
-//GET_DATA---------------------------------------------------------------------------
+//GET_ALL USERS DATA---------------------------------------------------------------------------
 exports.dataGet = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-
   const userData = await User.find();
 
   res.status(200).json({ status: 'success', data: userData });
+});
+
+//GET USER PROFILE
+exports.userProfile = catchAsync(async (req, res, next) => {
+  const userProfile = await User.findById(req.user.id);
+
+  if (!userProfile) return next(new AppError('user not found', 404));
+
+  res.status(200).json({ status: 'success', data: userProfile });
 });
 
 //UPDATE USER PROFILE
@@ -61,6 +68,7 @@ exports.userProfileUpdate = catchAsync(async (req, res, next) => {
   res.status(200).json({ data: updateData });
 });
 
+//DELETE USER PROFILE
 exports.userProfileDelete = catchAsync(async (req, res, next) => {
   const decode = await tokenVerify(req.token);
 
