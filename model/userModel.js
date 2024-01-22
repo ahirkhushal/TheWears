@@ -71,6 +71,12 @@ userschema.pre('save', async function (next) {
   next();
 });
 
+// userschema.pre(/^find/, function (next) {
+//   this.populate('address');
+
+//   next();
+// });
+
 userschema.methods.createEmailVarificationToken = function () {
   const varifyToken = crypto.randomBytes(32).toString('hex');
 

@@ -5,9 +5,11 @@ const {
   signup,
   login,
   signUpValidation,
+  admin,
 } = require('../controller/authController');
 const {
   dataGet,
+  userProfile,
   userProfileUpdate,
   uploadUserPhoto,
   userProfileDelete,
@@ -27,11 +29,15 @@ router.post('/signUpvalidation/:id', signUpValidation);
 router.post('/signupdetails/:id', signup);
 router.post('/login', login);
 router.post('/forgotPassword', forgotPassword);
-router.get('/getData/:id', protect, dataGet);
 router.patch('/resetPassword', resetPassword);
-router.patch('/updatePassword', protect, updatePassword);
-router.patch('/userProfileUpdate', protect, uploadUserPhoto, userProfileUpdate);
-router.delete('/userProfileDelete', protect, userProfileDelete);
+
+router.use(protect);
+
+router.get('/getData/:id', admin, dataGet);
+router.get('/userProfile', userProfile);
+router.patch('/updatePassword', updatePassword);
+router.patch('/userProfileUpdate', uploadUserPhoto, userProfileUpdate);
+router.delete('/userProfileDelete', userProfileDelete);
 
 router.get('/', (req, res) => {
   res.status(200).json({ statis: 'success' });

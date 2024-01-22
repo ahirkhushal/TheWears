@@ -124,7 +124,6 @@ const deleteImage = catchAsync(async (req, res, next) => {
     message: 'image successfully deleted!',
   });
 });
-// .populate('reviews');
 
 module.exports = {
   productPost,
