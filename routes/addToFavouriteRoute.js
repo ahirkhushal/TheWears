@@ -8,8 +8,10 @@ const { protect } = require('../middleware/protect');
 
 const router = express.Router();
 
-router.post('/addtofavourite', protect, addToFavouriteList);
-router.get('/getFavouriteItems', protect, getFavouriteItems);
-router.delete('/removeFavourites', protect, removeFavouritesItems);
+router.use(protect);
+
+router.post('/addtofavourite', addToFavouriteList);
+router.get('/getFavouriteItems', getFavouriteItems);
+router.delete('/removeFavourites', removeFavouritesItems);
 
 module.exports = router;

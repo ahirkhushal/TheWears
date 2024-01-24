@@ -5,7 +5,7 @@ const chaiExclude = require('chai-exclude');
 const {
   registrationResponseData,
   verificationEmailResponse,
-} = require('./data');
+} = require('./z-data');
 const { setBearerToken } = require('./c-tokenManager');
 
 const { expect } = chai;

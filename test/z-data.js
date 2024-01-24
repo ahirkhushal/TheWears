@@ -80,9 +80,67 @@ const updatedProductResponse = {
   },
 };
 
+const addToCartPostResponse = {
+  status: 'success',
+  data: {
+    user: '6599db2d3299b5840c4f3fa2',
+    product: {
+      _id: '65b11f0ce3a2ee1044542445',
+      price: 2000,
+      id: '65b11f0ce3a2ee1044542445',
+    },
+    selectSize: 'X',
+    quantity: 1,
+    price: 20000,
+    _id: '65b153dbbb6f061cc847066d',
+    __v: 0,
+  },
+  message: 'item successfully added to cart',
+};
+
+const getAddToCartResponse = {
+  status: 'success',
+  data: [
+    {
+      _id: '65b153dbbb6f061cc847066d',
+      user: {
+        _id: '6599db2d3299b5840c4f3fa2',
+        username: 'khushal',
+      },
+      product: {
+        _id: '65b11f0ce3a2ee1044542445',
+        category: 'SKIRT',
+        name: 'top skirt',
+        description: 'this is skirt',
+        price: 2000,
+        discountPrice: 10,
+        size: ["['M', 'XL', 'L']"],
+        stock: 100,
+        ratingsAverage: 4.8,
+        ratingsQuantity: 10,
+        images: [
+          'product-WhatsApp Image 2023-05-15 at 20-1706106636840.jpeg',
+          'product-WhatsApp Image 2023-12-26 at 23-1706106636847.jpeg',
+        ],
+        hashtags: ["['#women' , '#skirt']"],
+        createdAt: 'January 24th 2024, 8:00:36 pm',
+        slug: 'top-skirt',
+        __v: 0,
+        id: '65b11f0ce3a2ee1044542445',
+      },
+      selectSize: 'X',
+      quantity: 1,
+      price: 20000,
+      __v: 0,
+    },
+  ],
+};
+
 module.exports = {
   verificationEmailResponse,
   registrationResponseData,
   productPostResponse,
   updatedProductResponse,
+  addToCartPostResponse,
+  getAddToCartResponse,
 };

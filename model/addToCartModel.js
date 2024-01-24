@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AppError = require('../utils/AppError');
 
 const addToCartSchema = mongoose.Schema({
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -30,6 +31,8 @@ addToCartSchema.pre('save', async function (next) {
     path: 'product',
     select: 'price',
   });
+
+  if (!this.product) return next(new AppError('invalid productId', 400));
 
   this.price = populatedProduct.product.price * this.quantity;
 
