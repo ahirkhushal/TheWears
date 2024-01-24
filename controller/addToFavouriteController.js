@@ -2,17 +2,20 @@ const APIFeatures = require('../utils/APIFeatures');
 const AddToFavourite = require('../model/addToFavoriteModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
+const Product = require('../model/productModel');
 
 const addToFavouriteList = catchAsync(async (req, res, next) => {
   if (!req.body.productId)
     return next(new AppError('please provide productId', 400));
 
+  const product = await Product.findById(req.body.productId);
+  if (!product) return next(new AppError('invalid productId', 400));
+
   const addToFavouriteItem = await AddToFavourite.create({
     user: req.user.id,
-    product: req.body.productId,
+    product: product.id,
   });
 
-  console.log(addToFavouriteItem);
   res.status(200).json({
     status: 'success',
     message: 'product successfully added to favourite list',
@@ -43,12 +46,11 @@ const removeFavouritesItems = catchAsync(async (req, res, next) => {
     product: req.body.productId,
   });
 
-  if (!deletedData)
-    return next(new AppError('you removed this item from favourites', 400));
+  if (!deletedData) return next(new AppError('No favourite item found', 404));
 
   res.status(200).json({
     status: 'success',
-    message: 'item successfullt removed from you Fsvourite List',
+    message: 'item successfully removed from your Favourite List',
   });
 });
 

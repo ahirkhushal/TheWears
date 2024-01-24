@@ -1,17 +1,16 @@
 const chai = require('chai');
 const request = require('supertest');
 const app = require('../app');
-const User = require('../model/userModel');
 
 const chaiExclude = require('chai-exclude');
-const { productPostResponse, updatedProductResponse } = require('./data');
+const { productPostResponse, updatedProductResponse } = require('./z-data');
 const { getBearerToken } = require('./c-tokenManager');
 
 const { expect } = chai;
 
 chai.use(chaiExclude);
 
-describe('products tests', async () => {
+describe('products tests', () => {
   let response;
   let BearerToken;
   let id;
@@ -40,6 +39,7 @@ describe('products tests', async () => {
         .expect(200);
 
       id = response.body.data._id;
+
       expect(response.body)
         .excludingEvery(['createdAt', '_id', '__v', 'id'])
         .to.deep.equal(productPostResponse);
