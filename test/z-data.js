@@ -86,7 +86,7 @@ const addToCartPostResponse = {
     user: '6599db2d3299b5840c4f3fa2',
     product: {
       _id: '65b11f0ce3a2ee1044542445',
-      price: 2000,
+      price: 20000,
       id: '65b11f0ce3a2ee1044542445',
     },
     selectSize: 'X',
@@ -112,7 +112,7 @@ const getAddToCartResponse = {
         category: 'SKIRT',
         name: 'top skirt',
         description: 'this is skirt',
-        price: 2000,
+        price: 20000,
         discountPrice: 10,
         size: ["['M', 'XL', 'L']"],
         stock: 100,
@@ -136,6 +136,40 @@ const getAddToCartResponse = {
   ],
 };
 
+const updatedCartItem = {
+  status: 'success',
+  data: {
+    _id: '65b2a460ea58a1db2065d55e',
+    user: { _id: '65b2a45cea58a1db2065d51d', username: 'khushal' },
+    product: {
+      _id: '65b2a45bea58a1db2065d519',
+      price: 20000,
+      id: '65b2a45bea58a1db2065d519',
+    },
+    selectSize: 'L',
+    quantity: 5,
+    price: 100000,
+    __v: 0,
+  },
+};
+
+const addressPostResponse = {
+  status: 'success',
+  data: {
+    user: '65b2ac2184815993d7dbaa04',
+    fullName: 'khushal ahir dineshbhai',
+    mobileNumber: '9979503660',
+    pinCode: 395004,
+    city: 'surat',
+    state: 'gujarat',
+    streetAddress: 'abc street',
+    area: 'ram path',
+    saveAs: 'HOME',
+    _id: '65b2ac2984815993d7dbaa5f',
+    __v: 0,
+  },
+};
+
 module.exports = {
   verificationEmailResponse,
   registrationResponseData,
@@ -143,4 +177,6 @@ module.exports = {
   updatedProductResponse,
   addToCartPostResponse,
   getAddToCartResponse,
+  updatedCartItem,
+  addressPostResponse,
 };

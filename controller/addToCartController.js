@@ -28,8 +28,11 @@ const getCartItems = catchAsync(async (req, res, next) => {
 
 const updateCartItems = catchAsync(async (req, res, next) => {
   const filterObject = filterObj(req.body, 'quantity', 'selectSize');
+
   const existingCartItem = await AddToCart.findById(req.query.id);
+
   if (!existingCartItem) return next(new AppError('Product not found', 404));
+
   Object.assign(existingCartItem, filterObject);
   const productdata = await existingCartItem.save();
   res.status(200).json({ status: 'success', data: productdata });

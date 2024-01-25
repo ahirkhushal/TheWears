@@ -64,7 +64,11 @@ UserAddressSchema.pre('save', async function (next) {
   const userAddressCount = await mongoose
     .model('Address')
     .countDocuments({ user: this.user });
-  console.log(userAddressCount);
+  console.log(
+    userAddressCount,
+    '<<<<<<<<<<<<<<<<<<<<---------------------------userAddressCount'
+  );
+
   if (userAddressCount + 1 > 3) {
     return next(
       new AppError('Maximum number of addresses reached for this user', 400)
