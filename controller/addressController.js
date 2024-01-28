@@ -37,8 +37,6 @@ const getOneAddress = catchAsync(async (req, res, next) => {
 
   if (!address) return next(new AppError('no address found!', 404));
 
-  console.log(address);
-
   res.status(200).json({ status: 'success', data: address });
 });
 
@@ -57,7 +55,7 @@ const UpdateAddress = catchAsync(async (req, res, next) => {
 const deleteAddress = catchAsync(async (req, res, next) => {
   const deletedAddres = await Address.findByIdAndDelete(req.query.id);
 
-  if (!deletedAddres) return next(new AppError('address already deleted', 400));
+  if (!deletedAddres) return next(new AppError('address not found', 404));
 
   res
     .status(200)

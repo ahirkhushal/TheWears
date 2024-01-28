@@ -170,6 +170,42 @@ const addressPostResponse = {
   },
 };
 
+const getAddressesResponse = {
+  status: 'success',
+  data: [
+    {
+      _id: '65b63104fac875a06729e8b6',
+      user: '65b630fbfac875a06729e85b',
+      fullName: 'khushal ahir dineshbhai',
+      mobileNumber: '9979503660',
+      pinCode: 395004,
+      city: 'surat',
+      state: 'gujarat',
+      streetAddress: 'abc street',
+      area: 'ram path',
+      saveAs: 'HOME',
+      __v: 0,
+    },
+  ],
+};
+
+const updatedAddressResponse = {
+  status: 'success',
+  data: {
+    _id: '65b636079e1cedaba761006f',
+    user: '65b636009e1cedaba7610014',
+    fullName: 'khushalkumar ahir is my name',
+    mobileNumber: '9979503660',
+    pinCode: 395004,
+    city: 'surat',
+    state: 'gujarat',
+    streetAddress: 'abc street',
+    area: 'ram sita',
+    saveAs: 'OFFICE',
+    __v: 0,
+  },
+};
+
 module.exports = {
   verificationEmailResponse,
   registrationResponseData,
@@ -179,4 +215,6 @@ module.exports = {
   getAddToCartResponse,
   updatedCartItem,
   addressPostResponse,
+  getAddressesResponse,
+  updatedAddressResponse,
 };
