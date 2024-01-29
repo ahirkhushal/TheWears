@@ -1,5 +1,6 @@
 const multer = require('multer');
-const AppError = require('./AppError');
+
+const AppError = require('../utils/AppError');
 
 const multerUpload = (arg) => {
   const multerStorage = multer.diskStorage({
