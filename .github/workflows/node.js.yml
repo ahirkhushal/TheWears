@@ -2,9 +2,9 @@ name: Nodejs github Action
 
 on:
   push:
-    branches: ['development']
+    branches: ["development"]
   pull_request:
-    branches: ['development']
+    branches: ["development"]
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['16.x']
+        node-version: ["20.x"]
 
     steps:
       - name: Checkout repository
@@ -24,10 +24,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Navigate to the backend directory
+        run: cd backend
+
       - name: Install dependencies
+        working-directory: ./backend
         run: npm install
 
       - name: Set up environment variables
+        working-directory: ./backend
         run: |
           echo "NODE_ENV=test" >> test.env
           echo "PORT=2405" >> test.env
@@ -35,6 +40,7 @@ jobs:
           echo "OWNER_EMAIL=khushalahir31@gmail.com" >> test.env
 
       - name: Set up secrets
+        working-directory: ./backend
         run: |
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> test.env
           echo "MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}" >> test.env
@@ -42,4 +48,5 @@ jobs:
           echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> test.env
 
       - name: Run unit tests
+        working-directory: ./backend
         run: npm run test
