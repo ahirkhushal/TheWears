@@ -1,3 +1,108 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
+
+  .custom-bg-image {
+    background-image: linear-gradient(
+        to right bottom,
+        rgba(0, 0, 0, 0.8),
+        rgba(0, 0, 0, 0.8)
+      ),
+      url("/bg-1.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+
+  .custom-bg-image-signin {
+    background-image: linear-gradient(
+        to right bottom,
+        rgba(0, 0, 0, 0.8),
+        rgba(0, 0, 0, 0.8)
+      ),
+      url("/bg-6.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+
+  /* background-image: linear-gradient(
+        to right bottom,
+        rgba(35, 55, 57, 0.8),
+        rgba(6, 17, 17, 0.8)
+      ),
+      url("/bg-1.jpg");
+    background-size: cover;
+    background-position: center;
+  } */
+  /* background-image: linear-gradient(
+        to right bottom,
+        rgba(73, 24, 24, 0.8),
+        rgba(24, 25, 25, 0.8)
+      ),
+      url("/background-login.jpg");
+    background-size: cover;
+    background-position: center;
+  } */
+
+  .loader {
+    width: 45px;
+    aspect-ratio: 0.75;
+    --c: no-repeat linear-gradient(theme(colors.stone.800) 0 0);
+    background:
+      var(--c) 0% 50%,
+      var(--c) 50% 50%,
+      var(--c) 100% 50%;
+    background-size: 20% 50%;
+    animation: loading 1s infinite linear;
+  }
+
+  @keyframes loading {
+    20% {
+      background-position:
+        0% 0%,
+        50% 50%,
+        100% 50%;
+    }
+    40% {
+      background-position:
+        0% 100%,
+        50% 0%,
+        100% 50%;
+    }
+    60% {
+      background-position:
+        0% 50%,
+        50% 100%,
+        100% 0%;
+    }
+    80% {
+      background-position:
+        0% 50%,
+        50% 50%,
+        100% 100%;
+    }
+  }
+}
+
+.navbar {
+  background-color: #a5a58d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  font-family: "Jersey 20", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.5rem;
+}
+
+::selection {
+  background: #5b1211;
+  color: white;
+}
