@@ -1,24 +1,25 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line
 export default {
-  content: ["./src/**/*.{html,js,jsx}"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    fontFamily: {
+      mulish: "mulish",
+    },
+
     extend: {
+      fontSize: {
+        huge: ["80rem", { lineHeight: "1" }],
+      },
+      height: {
+        screen: "100dvh",
+      },
       colors: {
-        "custom-gray": "#000000",
-        "custom-radBrown": "#8e5659",
+        brown: "#6e3635",
       },
       screens: {
-        xs: "400px",
-        sm2: "466px",
-        smm: "678px",
-        sm: "884px",
-        md: "1413px",
-        lg: "1024px",
-        xl: "1280px",
-      },
-      width: {
-        128: "32rem",
-        144: "36rem",
+        signupSm: "450px",
+        smallSr: "278px",
       },
     },
   },
