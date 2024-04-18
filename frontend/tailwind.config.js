@@ -5,6 +5,7 @@ export default {
   theme: {
     fontFamily: {
       mulish: "mulish",
+      rowdies: "rowdies",
     },
 
     extend: {
