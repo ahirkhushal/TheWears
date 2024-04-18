@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 // import Signup from "./features/signup/Signup";
-import Home from "./features/Home/Home";
 import Error from "./ui/Error";
 import AppLayout from "./ui/AppLayout";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 function App() {
   return (
