@@ -7,11 +7,9 @@ export default function NotFound() {
     <div className="flex h-screen w-full items-center justify-center overflow-y-hidden">
       <div className="max-w-md space-y-6 text-center">
         <div className="flex items-center justify-center gap-2">
-          <p className="text-sm font-bold text-black lg:text-xl">404</p>
-          <span className="mx-2 text-sm text-black lg:text-xl">|</span>{" "}
-          <p className="text-sm font-bold text-black lg:text-xl">
-            Oops! Page not found.
-          </p>
+          <p className="text-sm font-bold lg:text-xl">404</p>
+          <span className="mx-2 text-sm lg:text-xl">|</span>{" "}
+          <p className="text-sm font-bold lg:text-xl">Oops! Page not found.</p>
         </div>
         <Button onClick={() => navigate("/")}>Go back home</Button>
       </div>
