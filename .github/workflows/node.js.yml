@@ -42,10 +42,10 @@ jobs:
       - name: Set up secrets
         working-directory: ./backend
         run: |
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> test.env
-          echo "MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}" >> test.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> test.env
-          echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> test.env
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+          echo "MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> .env
 
       - name: Run unit tests
         working-directory: ./backend

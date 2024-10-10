@@ -1,4 +1,4 @@
-require('dotenv').config({ path: 'test.env' });
+require('dotenv').config({ path: '.env' });
 const mongoose = require('mongoose');
 const Product = require('../../model/productModel');
 const { setProductId } = require('../c-tokenManager');
