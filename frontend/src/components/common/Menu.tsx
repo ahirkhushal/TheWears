@@ -1,6 +1,4 @@
-"use client";
-
-import { Ellipsis, LogOut } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -24,7 +22,7 @@ export function Menu({ isOpen }: MenuProps) {
   const menuList = getMenuList();
 
   return (
-    <ScrollArea className="[&>div>div[style]]:!block">
+    <ScrollArea className="no-scrollbar [&>div>div[style]]:!block">
       <nav className="mt-8 h-full w-full">
         <ul className="flex min-h-[calc(100vh-48px-36px-16px-32px)] flex-col items-start space-y-1 px-2 lg:min-h-[calc(100vh-32px-40px-32px)]">
           {menuList.map(({ groupLabel, menus }, index) => (
@@ -112,7 +110,7 @@ export function Menu({ isOpen }: MenuProps) {
               )}
             </li>
           ))}
-          <li className="flex w-full grow items-end">
+          {/* <li className="flex w-full grow items-end">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
@@ -139,7 +137,7 @@ export function Menu({ isOpen }: MenuProps) {
                 )}
               </Tooltip>
             </TooltipProvider>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </ScrollArea>

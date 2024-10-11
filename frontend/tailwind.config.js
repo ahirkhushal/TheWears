@@ -52,6 +52,21 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none",
+          "srollbar-width": "none",
+        },
+      };
+
+      addUtilities(newUtilities);
+    },
+  ],
   darkMode: "class",
 };

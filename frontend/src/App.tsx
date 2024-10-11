@@ -5,6 +5,7 @@ import { ThemeProvider } from "./context/ThemeProviderContext";
 import { AuthProvider } from "./context/AuthContext";
 import { TailwindIndicator } from "./components/common/TailwindIndicator";
 import GeneralSkeleton from "./components/common/GeneralSkeleton";
+
 const AppLayout = lazy(() => import("./components/layout/AppLayout"));
 const Home = lazy(() => import("@/pages/Home"));
 const Login = lazy(() => import("@/pages/Login"));
@@ -16,16 +17,45 @@ const App: React.FC = () => {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AuthProvider>
         <BrowserRouter>
-          <Suspense fallback={<GeneralSkeleton />}>
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route path="/" element={<Home />} />
-              </Route>
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route
+                path="/"
+                element={
+                  <Suspense fallback={<GeneralSkeleton />}>
+                    <Home />
+                  </Suspense>
+                }
+              />
+            </Route>
+
+            <Route
+              path="login"
+              element={
+                <Suspense fallback={<GeneralSkeleton />}>
+                  <Login />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="signup"
+              element={
+                <Suspense fallback={<GeneralSkeleton />}>
+                  <Signup />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="*"
+              element={
+                <Suspense fallback={<GeneralSkeleton />}>
+                  <NotFound />
+                </Suspense>
+              }
+            />
+          </Routes>
           <TailwindIndicator />
         </BrowserRouter>
       </AuthProvider>
