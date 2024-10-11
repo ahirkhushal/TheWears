@@ -11,13 +11,13 @@ import {
 } from "../ui/tooltip";
 import { useTheme } from "@/context/ThemeProviderContext";
 
-export function ModeToggle() {
+export function ModeToggle({ className }: { className?: string }) {
   const { setTheme, theme } = useTheme();
 
   return (
     <TooltipProvider disableHoverableContent>
       <Tooltip delayDuration={100}>
-        <TooltipTrigger asChild>
+        <TooltipTrigger asChild className={className}>
           <Button
             className="mr-2 h-8 w-8 rounded-full bg-background"
             variant="outline"
