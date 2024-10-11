@@ -10,8 +10,13 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const app = require('./app');
 
+const DB = process.env.MONGODB_URI.replace(
+  '<password>',
+  process.env.MONGODB_PASSWORD
+);
+
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(DB , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

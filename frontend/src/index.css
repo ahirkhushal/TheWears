@@ -2,107 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  /* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
+@layer base {
+  :root {
+    font-family: "Afacad Flux", sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 500;
 
-  .custom-bg-image {
-    background-image: linear-gradient(
-        to right bottom,
-        rgba(0, 0, 0, 0.8),
-        rgba(0, 0, 0, 0.8)
-      ),
-      url("/bg-1.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
   }
 
-  .custom-bg-image-signin {
-    background-image: linear-gradient(
-        to right bottom,
-        rgba(0, 0, 0, 0.8),
-        rgba(0, 0, 0, 0.8)
-      ),
-      url("/bg-6.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-  /* background-image: linear-gradient(
-        to right bottom,
-        rgba(35, 55, 57, 0.8),
-        rgba(6, 17, 17, 0.8)
-      ),
-      url("/bg-1.jpg");
-    background-size: cover;
-    background-position: center;
-  } */
-  /* background-image: linear-gradient(
-        to right bottom,
-        rgba(73, 24, 24, 0.8),
-        rgba(24, 25, 25, 0.8)
-      ),
-      url("/background-login.jpg");
-    background-size: cover;
-    background-position: center;
-  } */
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
 
-  .loader {
-    width: 45px;
-    aspect-ratio: 0.75;
-    --c: no-repeat linear-gradient(theme(colors.stone.800) 0 0);
-    background:
-      var(--c) 0% 50%,
-      var(--c) 50% 50%,
-      var(--c) 100% 50%;
-    background-size: 20% 50%;
-    animation: loading 1s infinite linear;
-  }
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
 
-  @keyframes loading {
-    20% {
-      background-position:
-        0% 0%,
-        50% 50%,
-        100% 50%;
-    }
-    40% {
-      background-position:
-        0% 100%,
-        50% 0%,
-        100% 50%;
-    }
-    60% {
-      background-position:
-        0% 50%,
-        50% 100%,
-        100% 0%;
-    }
-    80% {
-      background-position:
-        0% 50%,
-        50% 50%,
-        100% 100%;
-    }
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 }
 
-.navbar {
-  background-color: #a5a58d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-body {
-  font-family: "Jersey 20", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 1.5rem;
-}
-
-::selection {
-  background: #e6e6dd;
-  color: #2b2b2b;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
