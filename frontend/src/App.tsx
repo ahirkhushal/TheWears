@@ -4,7 +4,8 @@ import "./App.css";
 import { ThemeProvider } from "./context/ThemeProviderContext";
 import { AuthProvider } from "./context/AuthContext";
 import { TailwindIndicator } from "./components/common/TailwindIndicator";
-import GeneralSkeleton from "./components/common/GeneralSkeleton";
+import GeneralSkeleton from "./components/skeletons/GeneralSkeleton";
+import AuthSkeletons from "./components/skeletons/AuthSkeletons";
 
 const AppLayout = lazy(() => import("./components/layout/AppLayout"));
 const Home = lazy(() => import("@/pages/Home"));
@@ -32,7 +33,7 @@ const App: React.FC = () => {
             <Route
               path="login"
               element={
-                <Suspense fallback={<GeneralSkeleton />}>
+                <Suspense fallback={<AuthSkeletons />}>
                   <Login />
                 </Suspense>
               }
@@ -41,7 +42,7 @@ const App: React.FC = () => {
             <Route
               path="signup"
               element={
-                <Suspense fallback={<GeneralSkeleton />}>
+                <Suspense fallback={<AuthSkeletons isSignup={true} />}>
                   <Signup />
                 </Suspense>
               }

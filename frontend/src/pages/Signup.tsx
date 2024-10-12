@@ -7,6 +7,8 @@ export default function Signup() {
       heading="Create an account"
       subHead="Enter your email below to create your account"
       btnTitle="Create account"
+      noAccountText="Already have an account?"
+      textAboutLink="login"
     />
   );
 }
