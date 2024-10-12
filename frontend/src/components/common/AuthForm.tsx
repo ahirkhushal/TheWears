@@ -10,7 +10,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FcGoogle } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { ModeToggle } from "./ModeToggle";
 
@@ -18,10 +18,14 @@ export default function AuthForm({
   heading,
   subHead,
   btnTitle,
+  noAccountText,
+  textAboutLink,
 }: {
   heading: string;
   subHead: string;
   btnTitle: string;
+  noAccountText: string;
+  textAboutLink: string;
 }) {
   const navigate = useNavigate();
 
@@ -43,6 +47,11 @@ export default function AuthForm({
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" placeholder="Password" />
+            {textAboutLink !== "signup" && (
+              <Link to="/" className="text-xs text-blue-500">
+                Forgot Password ?
+              </Link>
+            )}
           </div>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -54,11 +63,19 @@ export default function AuthForm({
               </span>
             </div>
           </div>
+
           <Button variant="outline">
             <FcGoogle className="mr-2 h-4 w-4" />
             Continue With Google
           </Button>
+          <div className="mt-1 flex items-center justify-center gap-2 text-center">
+            <p>{noAccountText}</p>
+            <Link to={`/${textAboutLink}`} className="text-blue-500">
+              {textAboutLink}
+            </Link>
+          </div>
         </CardContent>
+
         <CardFooter>
           <Button className="w-full" onClick={() => navigate("/")}>
             {btnTitle}
