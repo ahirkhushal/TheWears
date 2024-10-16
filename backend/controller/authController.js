@@ -103,7 +103,13 @@ exports.signup = catchAsync(async (req, res, next) => {
   userData.isVarified = true;
   await userData.save();
 
-  tokenGenrate(res, 201, userData);
+  // Generate tokens
+  const accessToken = tokenGenrate(userData.id);
+  const refreshToken = tokenGenrate(userData.id, true);
+
+  res
+    .status(201)
+    .json({ status: 'success', data: userData, accessToken, refreshToken });
 });
 
 //LOG-IN-----------------------------------------------------------------------------
@@ -121,7 +127,42 @@ exports.login = catchAsync(async (req, res, next) => {
   )
     return next(new AppError('email or password is wrong', 400));
 
-  tokenGenrate(res, 200, userData);
+  // Generate tokens
+  const accessToken = tokenGenrate(userData.id);
+  const refreshToken = tokenGenrate(userData.id, true);
+
+  userData.refreshToken = refreshToken;
+  await userData.save({ validateBeforeSave: false });
+
+  return res.status(200).json({
+    status: 'success',
+    data: userData,
+    accessToken,
+    refreshToken,
+  });
+});
+
+//REFRESH TOEKN
+exports.refreshToken = catchAsync(async (req, res, next) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return next(new AppError('Refresh token is required', 400));
+  }
+
+  const userData = await User.findOne({ refreshToken });
+
+  if (!userData) {
+    return next(new AppError('Invalid refresh token', 400));
+  }
+
+  // Generate a new access token
+  const accessToken = tokenGenrate(userData);
+
+  res.status(200).json({
+    status: 'success',
+    accessToken,
+  });
 });
 
 //ADMIN---------------------------------------------------------------------------------

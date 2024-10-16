@@ -6,6 +6,7 @@ const {
   login,
   signUpValidation,
   admin,
+  refreshToken,
 } = require('../controller/authController');
 const {
   dataGet,
@@ -28,6 +29,8 @@ router.post('/verificationEmail', signupEmailVarify);
 router.post('/signUpvalidation/:id', signUpValidation);
 router.post('/signupdetails/:id', signup);
 router.post('/login', login);
+router.post('/refresh-token', refreshToken);
+
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword', resetPassword);
 

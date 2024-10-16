@@ -60,31 +60,43 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   userData.passwordResetTokenExpires = undefined;
   await userData.save();
 
-  tokenGenrate(res, 200, userData);
+  const accessToken = tokenGenrate(userData.id);
+  const refreshToken = tokenGenrate(userData.id, true);
 
-  // res.status(200).json({ message: 'password successfully changed' });
+  res.status(200).json({
+    status: 'success',
+    data: userData,
+    accessToken,
+    refreshToken,
+  });
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   const decode = await tokenVerify(req.token);
 
-  const userdata = await User.findById(decode.id).select('+password');
+  const userData = await User.findById(decode.id).select('+password');
 
   if (
-    !(await userdata.passwordCorrectCheck(
+    !(await userData.passwordCorrectCheck(
       req.body.currentPassword,
-      userdata.password
+      userData.password
     ))
   )
     return next(
       new AppError('current password is incorreect! please try again', 400)
     );
 
-  userdata.password = req.body.newPassword;
-  userdata.confirmPassword = req.body.confirmPassword;
-  await userdata.save();
+  userData.password = req.body.newPassword;
+  userData.confirmPassword = req.body.confirmPassword;
+  await userData.save();
 
-  tokenGenrate(res, 200, userdata);
+  const accessToken = tokenGenrate(userData.id);
+  const refreshToken = tokenGenrate(userData.id, true);
 
-  // res.status(200).json({ message: 'password updated successfully' });
+  res.status(200).json({
+    status: 'success',
+    data: userData,
+    accessToken,
+    refreshToken,
+  });
 });

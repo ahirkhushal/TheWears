@@ -37,6 +37,10 @@ const userschema = mongoose.Schema({
     default: false,
   },
 
+  refreshToken: {
+    type: String,
+  },
+
   password: {
     type: String,
     required: [true, 'password is required'],

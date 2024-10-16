@@ -18,8 +18,10 @@ const registrationResponseData = {
     password: '$2b$12$CALHQOukDpKh9JqXiVPfMOk3xJFkzJPtGlYThh9kcWoOSw9/cH2PW',
     createdAt: 'December 10th 2023, 4:01:34 pm',
   },
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzU5Mzg2ODBjOGFjNDBkN2EwOTIyMyIsImlhdCI6MTcwMjIwNDI5NSwiZXhwIjoxNzA5OTgwMjk1fQ.KABAVOmKVdgmWZbo2VilN-ElWOHBA9aMLMfr9kZMHdA',
+  accessToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGE4MmQ3NGY2N2QwMmIwMTg2NWFlOCIsImlhdCI6MTcyODc0MjEwNCwiZXhwIjoxNzM2NTE4MTA0fQ.iU57DvPPJrp_H__f6nRj-O9W-GPHz4pn64ycvwvN4Gc',
+  refreshToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGE4MmQ3NGY2N2QwMmIwMTg2NWFlOCIsImlhdCI6MTcyODc0MjEwNCwiZXhwIjoxNzI5MzQ2OTA0fQ.Y1DZ5y-YpiX3dxr4KIDRnhtmGbuMXT9bbZPISI3wt4w',
 };
 
 const productPostResponse = {
