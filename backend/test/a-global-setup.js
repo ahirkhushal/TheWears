@@ -11,7 +11,7 @@ after(async () => {
   console.log(
     '-----------------------db disconnected------------------------------'
   );
-  await User.deleteMany();
+  await User.deleteOne({ email: 'test@gmail.com' });
   await product.deleteMany();
   await AddToFavourite.deleteMany();
   await AddToCart.deleteMany();

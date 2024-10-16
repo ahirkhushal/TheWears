@@ -87,7 +87,13 @@ describe('Authentication', () => {
         .expect(201);
 
       expect(response.body)
-        .excludingEvery(['_id', 'password', 'createdAt', 'token'])
+        .excludingEvery([
+          '_id',
+          'password',
+          'createdAt',
+          'accessToken',
+          'refreshToken',
+        ])
         .to.deep.equal(registrationResponseData);
     });
   });
@@ -100,18 +106,22 @@ describe('Authentication', () => {
         .send(requestBody)
         .expect(200);
 
-      // console.log(response.body);
-
-      bearerToken = response.body.token;
+      bearerToken = response.body.accessToken;
       setBearerToken(bearerToken);
 
       expect(response.body)
-        .excludingEvery(['_id', 'password', 'createdAt', 'token'])
+        .excludingEvery([
+          '_id',
+          'password',
+          'createdAt',
+          'accessToken',
+          'refreshToken',
+        ])
         .to.deep.equal(registrationResponseData);
     });
 
     it('should not login the user', async () => {
-      const requestBody = { email: 'test1@gmail.com', password: '1234564562' };
+      const requestBody = { email: 'test@gmail.com', password: '1234564562' };
       response = await request(app)
         .post('/api/v1/users/login')
         .send(requestBody)
@@ -177,7 +187,13 @@ describe('Authentication', () => {
         .expect(200);
 
       expect(response.body)
-        .excludingEvery(['_id', 'password', 'createdAt', 'token'])
+        .excludingEvery([
+          '_id',
+          'password',
+          'createdAt',
+          'accessToken',
+          'refreshToken',
+        ])
         .to.deep.equal(registrationResponseData);
     });
 
@@ -195,7 +211,13 @@ describe('Authentication', () => {
         .expect(200);
 
       expect(response.body)
-        .excludingEvery(['_id', 'password', 'createdAt', 'token'])
+        .excludingEvery([
+          '_id',
+          'password',
+          'createdAt',
+          'refreshToken',
+          'accessToken',
+        ])
         .to.deep.equal(registrationResponseData);
     });
 

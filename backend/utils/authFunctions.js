@@ -50,12 +50,14 @@ exports.signUpTimeValidator = async (condition, userData, next) => {
   }
 };
 
-exports.tokenGenrate = (res, statusCode, userData) => {
-  const token = jwt.sign({ id: userData.id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+exports.tokenGenrate = (userId, isRefreshToken = false) => {
+  const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: isRefreshToken
+      ? process.env.JWT_REFRESH_EXPIRES_IN
+      : process.env.JWT_EXPIRES_IN,
   });
 
-  res.status(statusCode).json({ status: 'success', data: userData, token });
+  return token;
 };
 
 exports.tokenVerify = async (token) => {
