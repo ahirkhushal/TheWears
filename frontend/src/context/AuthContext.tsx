@@ -5,6 +5,8 @@ interface AuthContextType {
   isLoading: boolean;
   login: () => void;
   logout: () => void;
+  accessToken: string | null;
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -12,7 +14,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // const [token, setToken] = useState();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,7 +36,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        isLoading,
+        login,
+        logout,
+        accessToken,
+        setAccessToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

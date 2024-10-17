@@ -26,12 +26,9 @@ const userschema = mongoose.Schema({
     type: String,
     default: 'default.jpg',
   },
-
-  isVarified: {
-    type: Boolean,
-    default: false,
+  generateOtp: {
+    type: String,
   },
-
   EmailisVarified: {
     type: Boolean,
     default: false,
@@ -63,7 +60,6 @@ const userschema = mongoose.Schema({
   passwordResetToken: String,
   EmailvarificationExpires: Date,
   passwordResetTokenExpires: Date,
-  SignUpTImeExpires: Date,
   createdAt: String,
 });
 
@@ -82,33 +78,33 @@ userschema.pre('save', async function (next) {
 // });
 
 userschema.methods.createEmailVarificationToken = function () {
-  const varifyToken = crypto.randomBytes(32).toString('hex');
+  const verifyToken = crypto.randomBytes(32).toString('hex');
+  const generateOtp =
+    process.env.NODE_ENV === 'test'
+      ? '123456'
+      : Math.floor(100000 + Math.random() * 900000);
 
   this.EmailVarificationToken = crypto
     .createHash('sha256')
-    .update(varifyToken)
+    .update(verifyToken)
     .digest('hex');
 
   this.EmailvarificationExpires = Date.now() + 10 * 60 * 1000;
-
-  return varifyToken;
+  this.generateOtp = generateOtp;
+  return { verifyToken, generateOtp };
 };
 
 userschema.methods.createPasswordResetToken = function () {
-  const varifyToken = crypto.randomBytes(32).toString('hex');
+  const verifyToken = crypto.randomBytes(32).toString('hex');
 
   this.passwordResetToken = crypto
     .createHash('sha256')
-    .update(varifyToken)
+    .update(verifyToken)
     .digest('hex');
 
   this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
 
-  return varifyToken;
-};
-
-userschema.methods.signupTimer = function () {
-  this.SignUpTImeExpires = Date.now() + 10 * 60 * 1000;
+  return verifyToken;
 };
 
 userschema.methods.passwordCorrectCheck = async function (enteredPass, dbPass) {

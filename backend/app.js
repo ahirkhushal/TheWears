@@ -1,6 +1,7 @@
 const express = require('express');
 // const session = require('express-session');
 const path = require('path');
+const cors = require('cors');
 const UserRouter = require('./routes/userRoute');
 const productRouter = require('./routes/productRoute');
 const reviewRouter = require('./routes/reviewRoute');
@@ -11,6 +12,15 @@ const AppError = require('./utils/AppError');
 const globalErrorHandler = require('./controller/errorContoller');
 const morgan = require('morgan');
 const app = express();
+
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 if (process.env.NODE_ENV === 'production') app.use(morgan('dev'));
 

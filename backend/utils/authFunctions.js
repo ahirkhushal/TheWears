@@ -8,24 +8,18 @@ const { promisify } = require('util');
 
 //signup handler function-----------------------------------------------------------
 
-exports.emailVerificationLinkSent = async (userdata, email, req, res, next) => {
-  const verfiyToken = userdata.createEmailVarificationToken();
+exports.emailVerificationOTPSent = async (userdata, email, req, next) => {
+  const { verifyToken, generateOtp } = userdata.createEmailVarificationToken();
 
   userdata.EmailisVarified = false;
-  userdata.SignUpTImeExpires = undefined;
+  userdata.SignUpTimeExpires = undefined;
   await userdata.save({ validateBeforeSave: false });
 
   try {
-    const html = EmailVarificationHtml(req, verfiyToken);
+    const html = EmailVarificationHtml(req, generateOtp);
     await EmailSender(email, 'verification of Email', html);
 
-    res.status(200).json({
-      status: 'success',
-      data: 'varification email send to your email',
-      link: `${req.protocol}://${req.get(
-        'host'
-      )}/api/v1/users/verificationEmail?token=${verfiyToken}`,
-    });
+    return verifyToken;
   } catch (err) {
     console.log(err);
     userdata.EmailVarificationToken = undefined;
@@ -44,7 +38,7 @@ exports.emailVerificationLinkSent = async (userdata, email, req, res, next) => {
 exports.signUpTimeValidator = async (condition, userData, next) => {
   if (condition < Date.now()) {
     userData.EmailisVarified = false;
-    userData.SignUpTImeExpires = undefined;
+    userData.SignUpTimeExpires = undefined;
     await userData.save({ validateBeforeSave: false });
     return next(new AppError('please verify the email address ', 400));
   }
