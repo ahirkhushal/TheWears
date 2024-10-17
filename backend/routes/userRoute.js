@@ -7,6 +7,7 @@ const {
   signUpValidation,
   admin,
   refreshToken,
+  signupVarification,
 } = require('../controller/authController');
 const {
   dataGet,
@@ -24,10 +25,12 @@ const {
 
 const router = express.Router();
 
-router.post('/signup', signupVarificationEmailSend);
-router.post('/verificationEmail', signupEmailVarify);
-router.post('/signUpvalidation/:id', signUpValidation);
-router.post('/signupdetails/:id', signup);
+router.post('/signup', signup);
+router.post('/verifyotp', signupVarification);
+
+// router.post('/verificationEmail', signupEmailVarify);
+// router.post('/signUpvalidation/:id', signUpValidation);
+// router.post('/signupdetails/:id', signup);
 router.post('/login', login);
 router.post('/refresh-token', refreshToken);
 

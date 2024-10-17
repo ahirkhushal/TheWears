@@ -1,7 +1,22 @@
 const verificationEmailResponse = {
   status: 'success',
-  data: 'varification email send to your email',
-  link: 'http://localhost:2405/api/v1/users/verificationEmail/verificationToken',
+  message: 'OTP sent to your Email',
+  data: {
+    username: 'test user',
+    email: 'test@gmail.com',
+    role: 'user',
+    photo: 'default.jpg',
+    EmailisVarified: false,
+    password: '$2b$12$nZrAoh9LXLfNyN9zXJtM4uqfvw53lwsNfiCIeZsH.wCSIkobqI9zy',
+    _id: '67110271ca6f36ec69582492',
+    __v: 0,
+    EmailVarificationToken:
+      'fe323c1fe8b6bc919ca029ff25a7c2cbdaae235111eaf4cf1cf2f5b1711e3fff',
+    EmailvarificationExpires: '2024-10-17T12:36:25.650Z',
+    generateOtp: '934126',
+  },
+  verifyToken:
+    'f6d53a0a244ef5c69bfc50b890b6b833032917bc5e1e48e1992151f2afef99f7',
 };
 
 const registrationResponseData = {
@@ -20,8 +35,6 @@ const registrationResponseData = {
   },
   accessToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGE4MmQ3NGY2N2QwMmIwMTg2NWFlOCIsImlhdCI6MTcyODc0MjEwNCwiZXhwIjoxNzM2NTE4MTA0fQ.iU57DvPPJrp_H__f6nRj-O9W-GPHz4pn64ycvwvN4Gc',
-  refreshToken:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGE4MmQ3NGY2N2QwMmIwMTg2NWFlOCIsImlhdCI6MTcyODc0MjEwNCwiZXhwIjoxNzI5MzQ2OTA0fQ.Y1DZ5y-YpiX3dxr4KIDRnhtmGbuMXT9bbZPISI3wt4w',
 };
 
 const productPostResponse = {

@@ -18,35 +18,45 @@ describe('Authentication', () => {
   let userId;
   let response;
 
-  describe('User Registration And Verification', () => {
+  describe('User signup And OTP sent', () => {
     it('should validate email and send verification email', async () => {
-      const requestBody = { email: 'test@gmail.com' };
+      const requestBody = {
+        email: 'test@gmail.com',
+        password: '123456456',
+        confirmPassword: '123456456',
+        userName: 'test user',
+        role: true,
+      };
 
       response = await request(app)
         .post('/api/v1/users/signup')
         .send(requestBody)
         .expect(200);
 
-      verificationToken = response.body.link.split('=').pop();
+      verificationToken = response.body.verifyToken;
       expect(response.body)
-        .excluding('link')
+        .excludingEvery(['verifyToken', 'data'])
         .to.deep.equal(verificationEmailResponse);
     });
 
-    it('should verify email successfully', async () => {
-      response = await request(app)
-        .post(`/api/v1/users/verificationEmail?token=${verificationToken}`)
-        .expect(200);
+    it('should verify OTP email invalid', async () => {
+      const requestBody = { verifyToken: verificationToken, OTP: '1q3456' };
 
-      userId = response.body.userData._id;
-      expect(response.body.data).to.equal('verification complete');
+      response = await request(app)
+        .post('/api/v1/users/verifyotp')
+        .send(requestBody)
+        .expect(400);
+
+      expect(response.body.message).to.equal('Invalid OTP! try again');
+      expect(response.body.status).to.equal('fail');
     });
 
-    it('should verify email failed', async () => {
-      const invalidToken = '123';
+    it('should verify token invalid', async () => {
+      const requestBody = { verifyToken: '123', OTP: '123456' };
 
       response = await request(app)
-        .post(`/api/v1/users/verificationEmail?token=${invalidToken}`)
+        .post('/api/v1/users/verifyotp')
+        .send(requestBody)
         .expect(400);
 
       expect(response.body.message).to.equal(
@@ -55,46 +65,15 @@ describe('Authentication', () => {
       expect(response.body.status).to.equal('fail');
     });
 
-    it('should not create a user', async () => {
-      const requestBody = {
-        username: 'khushal',
-        password: '123456456',
-        confirmPassword: '123456',
-      };
+    it('should verify OTP email successfully', async () => {
+      const requestBody = { verifyToken: verificationToken, OTP: '123456' };
 
       response = await request(app)
-        .post(`/api/v1/users/signupdetails/${userId}`)
+        .post('/api/v1/users/verifyotp')
         .send(requestBody)
-        .expect(500);
+        .expect(200);
 
-      expect(response.body.message).to.equal(
-        'User validation failed: confirmPassword: confirm password is not same as password'
-      );
-      expect(response.body.status).to.equal('error');
-    });
-
-    it('should create a user', async () => {
-      const requestBody = {
-        username: 'khushal',
-        password: '123456456',
-        confirmPassword: '123456456',
-        role: 'admin',
-      };
-
-      response = await request(app)
-        .post(`/api/v1/users/signupdetails/${userId}`)
-        .send(requestBody)
-        .expect(201);
-
-      expect(response.body)
-        .excludingEvery([
-          '_id',
-          'password',
-          'createdAt',
-          'accessToken',
-          'refreshToken',
-        ])
-        .to.deep.equal(registrationResponseData);
+      expect(response.body.data).to.equal('verification complete');
     });
   });
 
@@ -110,13 +89,7 @@ describe('Authentication', () => {
       setBearerToken(bearerToken);
 
       expect(response.body)
-        .excludingEvery([
-          '_id',
-          'password',
-          'createdAt',
-          'accessToken',
-          'refreshToken',
-        ])
+        .excludingEvery(['_id', 'password', 'createdAt', 'accessToken', 'data'])
         .to.deep.equal(registrationResponseData);
     });
 
@@ -126,7 +99,8 @@ describe('Authentication', () => {
         .post('/api/v1/users/login')
         .send(requestBody)
         .expect(400);
-      expect(response.body.message).to.equal('email or password is wrong');
+
+      expect(response.body.message).to.equal('Email or password is wrong');
       expect(response.body.status).to.equal('fail');
     });
   });
@@ -187,13 +161,7 @@ describe('Authentication', () => {
         .expect(200);
 
       expect(response.body)
-        .excludingEvery([
-          '_id',
-          'password',
-          'createdAt',
-          'accessToken',
-          'refreshToken',
-        ])
+        .excludingEvery(['_id', 'password', 'createdAt', 'accessToken', 'data'])
         .to.deep.equal(registrationResponseData);
     });
 
@@ -211,13 +179,7 @@ describe('Authentication', () => {
         .expect(200);
 
       expect(response.body)
-        .excludingEvery([
-          '_id',
-          'password',
-          'createdAt',
-          'refreshToken',
-          'accessToken',
-        ])
+        .excludingEvery(['data', 'accessToken'])
         .to.deep.equal(registrationResponseData);
     });
 

@@ -11,7 +11,7 @@ const { tokenVerify, tokenGenrate } = require('../utils/authFunctions');
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const userData = await User.findOne({
     email: req.body.email,
-    isVarified: true,
+    EmailisVarified: true,
   });
 
   if (!userData) return next(new AppError('this email does not exist', 400));
@@ -58,16 +58,16 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   userData.confirmPassword = req.body.confirmPassword;
   userData.passwordResetToken = undefined;
   userData.passwordResetTokenExpires = undefined;
-  await userData.save();
 
   const accessToken = tokenGenrate(userData.id);
   const refreshToken = tokenGenrate(userData.id, true);
+  userData.refreshToken = refreshToken;
 
+  await userData.save();
   res.status(200).json({
     status: 'success',
     data: userData,
     accessToken,
-    refreshToken,
   });
 });
 
@@ -88,15 +88,15 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   userData.password = req.body.newPassword;
   userData.confirmPassword = req.body.confirmPassword;
-  await userData.save();
 
   const accessToken = tokenGenrate(userData.id);
   const refreshToken = tokenGenrate(userData.id, true);
+  userData.refreshToken = refreshToken;
+  await userData.save();
 
   res.status(200).json({
     status: 'success',
     data: userData,
     accessToken,
-    refreshToken,
   });
 });
