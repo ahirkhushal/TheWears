@@ -6,7 +6,9 @@ interface AuthContextType {
   login: () => void;
   logout: () => void;
   accessToken: string | null;
+  refreshToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
+  setRefreshToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,24 +17,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
-
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const login = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsAuthenticated(true);
-      setIsLoading(false);
-    }, 1000);
+    // Logic for login, including setting tokens
+    setIsAuthenticated(true);
+    setIsLoading(false);
   };
 
   const logout = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsAuthenticated(false);
-      setIsLoading(false);
-    }, 1000);
+    setAccessToken(null);
+    setRefreshToken(null);
+    setIsAuthenticated(false);
+    setIsLoading(false);
   };
 
   return (
@@ -43,7 +44,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         login,
         logout,
         accessToken,
+        refreshToken,
         setAccessToken,
+        setRefreshToken,
       }}
     >
       {children}

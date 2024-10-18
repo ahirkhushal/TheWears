@@ -12,6 +12,10 @@ interface SignupPayload {
   confirmPassword: string;
 }
 
+interface RefreshTokenPayload {
+  refreshToken: string;
+}
+
 interface verifyOTPPayload {
   verifyToken: string;
   OTP: string;
@@ -39,6 +43,14 @@ export const signup = async ({
     email,
     password,
     confirmPassword,
+  });
+
+  return response.data;
+};
+
+export const refreshToken = async ({ refreshToken }: RefreshTokenPayload) => {
+  const response = await axiosInstance.post("/v1/users/refresh-token", {
+    refreshToken: refreshToken,
   });
 
   return response.data;
