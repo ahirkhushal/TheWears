@@ -197,26 +197,26 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
-//REFRESH TOEKN
+// Refresh token API
 exports.refreshToken = catchAsync(async (req, res, next) => {
   const { refreshToken } = req.body;
 
-  if (!refreshToken) {
-    return next(new AppError('Refresh token is required', 400));
-  }
+  if (!refreshToken)
+    return next(new AppError('Refresh token not provided', 400));
 
   const userData = await User.findOne({ refreshToken });
+  if (!userData) return next(new AppError('Invalid refresh token', 400));
 
-  if (!userData) {
-    return next(new AppError('Invalid refresh token', 400));
-  }
+  const newAccessToken = tokenGenrate(userData.id);
+  const newRefreshToken = tokenGenrate(userData.id, true);
 
-  // Generate a new access token
-  const accessToken = tokenGenrate(userData);
+  userData.refreshToken = newRefreshToken;
+  await userData.save({ validateBeforeSave: false });
 
   res.status(200).json({
     status: 'success',
-    accessToken,
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
   });
 });
 
